@@ -1,0 +1,9 @@
+*.pyc
+src/config/production_settings.py
+src/config/development_settings.py
+src/config/staging_settings.py
+src/config/test_settings.py
+requirements.txt.freeze
+venv
+.DS_Store
+deploy_config.py
