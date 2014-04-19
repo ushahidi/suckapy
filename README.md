@@ -1,0 +1,1 @@
+The Python version of [sucka](https://github.com/ushahidi/sucka).
