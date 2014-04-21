@@ -12,7 +12,8 @@ def test():
         rowd = gdelt.row_to_dict(l.split('\t'))
         if gdelt.is_relevant(rowd):
             item = gdelt.transform(rowd)
-            print item
             assert 'remoteID' in item
             assert 'content' in item
             assert 'publishedAt' in item
+            for tag in item['tags']:
+                assert 'name' in tag

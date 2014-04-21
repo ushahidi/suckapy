@@ -183,4 +183,6 @@ def set_tags(record):
         if record[key] in code_to_tag:
             tags = tags + code_to_tag[record[key]]
 
-    return list(set(tags))
+    no_dupes = list(set(tags))
+
+    return [{'name':tag, 'confidence':1} for tag in no_dupes]
