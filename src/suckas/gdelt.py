@@ -12,7 +12,7 @@ definition = {
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'day',
-    'startDate': datetime.strptime('20140420', "%Y%m%d"),
+    'startDate': datetime.strptime('20140422', "%Y%m%d"),
     'endDate': datetime.now() + timedelta(days=365)
 }
 
