@@ -5,6 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 QUEUE_NAME = 'suckpy'
+TRANSFORM_QUEUE_NAME = 'transform'
 
 environ = os.environ.get('SUCKAPY')
 # Set environment specific settings.

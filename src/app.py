@@ -15,9 +15,14 @@ from bson import objectid
 logger = logging.getLogger(__name__)
 
 db = get_connection()
-queue = Queue(settings.QUEUE_NAME, host=settings.REDIS_HOST, 
+
+app_queue = Queue(settings.QUEUE_NAME, host=settings.REDIS_HOST, 
             port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
-queue.serializer = json
+transform_queue = Queue(settings.TRANSFORM_QUEUE_NAME, host=settings.REDIS_HOST, 
+            port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
+
+app_queue.serializer = json
+transform_queue.serializer = json
 
 pkgpath = os.path.dirname(suckas.__file__)
 sucka_names = [name for _, name, _ in pkgutil.iter_modules([pkgpath])]
@@ -67,7 +72,9 @@ def save_item(data):
     if not item:
         item = db.Item.one({ 'remoteID': data['remoteID'], 'source': data['source'] })
 
-    queue.push({'id': str(item['_id'])})
+    id_str = str(item['_id'])
+    logger.info("Pushing task "+id_str)
+    transform_queue.push(json.dumps({'id': id_str}))
     return item
 
 
@@ -91,13 +98,34 @@ def do_suck(source):
 def start_app():
     setup_sources(sucka_names)
 
+    while True:
+        try:
+            task = app_queue.pop()
+            if task:
+                try:
+                    data = json.loads(task)
+                    task = None
+                    source = db.Source.one({'_id': objectid.ObjectId(data['id'])})
+                    if source:
+                        do_suck(source)
+                except Exception, e:
+                    import traceback
+                    logger.error("Problem! " + str(e))
+                    logger.error(traceback.format_exc())
+            time.sleep(1)
+        except KeyboardInterrupt:
+            logger.warn("Exiting suckapy")
+            sys.exit()
+
 
 if __name__ == "__main__":
     args = sys.argv
 
     if len(args) > 1 and args[1] == '--source':
-        pass
-        # do something with args[2]
+        source = db.Source.one({'_id': objectid.ObjectId(args[2])})
+        if source:
+            logger.info("Sucking for source "+source['sourceType'])
+            do_suck(source)
     else:
-        logger.info("Running process")
+        logger.warn("Starting suckapy")
         start_app()
