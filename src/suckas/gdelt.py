@@ -38,6 +38,7 @@ def transform(record):
     return_data = {
         'remoteID': record['GLOBALEVENTID'],
         'content': get_from_data(record, event_descriptions),
+        'createdAt': datetime.now(),
         'publishedAt': datetime.strptime(record['SQLDATE'], '%Y%m%d'),
         'lifespan': "temporary",
         'geo': {

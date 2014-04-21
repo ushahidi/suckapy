@@ -60,7 +60,7 @@ class Item(Document):
     default_values = {
         'license': 'unknown',
         'lifespan': 'temporary',
-        'createdAt': datetime.datetime.utcnow
+        'createdAt': datetime.datetime.now
     }
 
 
@@ -100,6 +100,6 @@ class Source(Document):
 
     default_values = {
         'status': 'active',
-        'createdAt': datetime.datetime.utcnow
+        'createdAt': datetime.datetime.now
     }
 
