@@ -93,6 +93,18 @@ def do_suck(source):
 
     last_retrieved = sucka.suck(save_item, handle_broken_source)
     return post_suck(source, last_retrieved)
+
+
+def process_task(task):
+    try:
+        data = json.loads(task)
+        source = db.Source.one({'_id': objectid.ObjectId(data['id'])})
+        if source:
+            do_suck(source)
+    except Exception, e:
+        import traceback
+        logger.error("Problem! " + str(e))
+        logger.error(traceback.format_exc())
         
 
 def start_app():
@@ -102,16 +114,7 @@ def start_app():
         try:
             task = app_queue.pop()
             if task:
-                try:
-                    data = json.loads(task)
-                    task = None
-                    source = db.Source.one({'_id': objectid.ObjectId(data['id'])})
-                    if source:
-                        do_suck(source)
-                except Exception, e:
-                    import traceback
-                    logger.error("Problem! " + str(e))
-                    logger.error(traceback.format_exc())
+                process_task(task)
             time.sleep(1)
         except KeyboardInterrupt:
             logger.warn("Exiting suckapy")
