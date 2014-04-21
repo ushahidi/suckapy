@@ -18,7 +18,7 @@ def test():
     assert len(sources) > 0
     assert 'internalID' in sources[0] and len(sources[0]['internalID']) > 0
 
-    source = sources[0]
+    source = [s for s in sources if s['sourceType'] == 'test_sucka'][0]
     sucka = app.get_sucka_for_source(source)
 
     assert hasattr(sucka, 'definition')
