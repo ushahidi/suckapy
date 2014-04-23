@@ -3,7 +3,8 @@ import requests
 import zipfile
 
 from datetime import datetime, date, timedelta
-from .data.gdelt import (event_descriptions, ethnicities)
+from .data.gdelt import (event_descriptions, ethnicities, knowngroups, 
+    religions, event_types)
 from rfc3987 import parse
 
 definition = {
@@ -39,6 +40,7 @@ def transform(record):
         'remoteID': record['GLOBALEVENTID'],
         'content': get_from_data(record, event_descriptions),
         'createdAt': datetime.now(),
+        'updatedAt': datetime.now(),
         'publishedAt': datetime.strptime(record['SQLDATE'], '%Y%m%d'),
         'lifespan': "temporary",
         'geo': {
@@ -178,7 +180,25 @@ def set_tags(record):
         '203': ['conflict', 'mass-violence', 'death', 'physical-violence', 'ethnic-violence']
     }
 
-    tags = []
+    def tags_for_props(props, tag_list, tags=[]):
+        for prop in props:
+            val = str(record[prop])
+            matches = [tag for tag in tag_list if str(tag['code']) == val]
+            tags += [match['label'] for match in matches]
+
+        return tags
+
+    tags = tags_for_props(['Actor1EthnicCode', 'Actor2EthnicCode'], ethnicities.data)
+    
+    tags = tags_for_props(['Actor1KnownGroupCode', 'Actor2KnownGroupCode'], 
+        knowngroups.data, tags)
+    
+    tags = tags_for_props(['Actor1Religion1Code', 'Actor1Religion2Code', 
+        'Actor2Religion1Code', 'Actor2Religion2Code'], religions.data, tags)
+    
+    tags = tags_for_props(['Actor1Type1Code', 'Actor1Type2Code','Actor1Type3Code', 
+        'Actor2Type1Code','Actor2Type2Code','Actor2Type3Code'], 
+        event_types.data, tags)
 
     for key in ['EventCode', 'EventRootCode', 'EventBaseCode']:
         if record[key] in code_to_tag:
