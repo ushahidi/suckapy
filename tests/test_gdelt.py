@@ -7,7 +7,6 @@ def test():
 
     lines = gdelt.extract_contents(local_filename, "20140419.export.CSV")
 
-    printed = 0
     for l in lines:
         rowd = gdelt.row_to_dict(l.split('\t'))
         if gdelt.is_relevant(rowd):
@@ -15,5 +14,6 @@ def test():
             assert 'remoteID' in item
             assert 'content' in item
             assert 'publishedAt' in item
+            assert item['tags'] is not None
             for tag in item['tags']:
                 assert 'name' in tag
