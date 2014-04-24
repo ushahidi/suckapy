@@ -7,6 +7,12 @@ from .data.gdelt import (event_descriptions, ethnicities, knowngroups,
     religions, event_types)
 from rfc3987 import parse
 
+description = """ GDELT is an ambitious project that attempts to capture 
+        'what's happening around the world, what its context is and who's 
+        involved, and how the world is feeling about it, every single day.' 
+        This stream is focused on conflict incidents. Beware, it's a little 
+        messy."""
+
 definition = {
     'internalID': 'b43be343-fca5-4415-b424-19e21468c33d',
     'sourceType': 'gdelt',
@@ -14,7 +20,8 @@ definition = {
     'frequency': 'repeats',
     'repeatsEvery': 'day',
     'startDate': datetime.strptime('20140422', "%Y%m%d"),
-    'endDate': datetime.now() + timedelta(days=365)
+    'endDate': datetime.now() + timedelta(days=365),
+    'description': description
 }
 
 
