@@ -10,11 +10,16 @@ from datetime import datetime
 from qr import Queue
 from config import settings
 from cn_store_py.connect import get_connection
+from cn_search_py.connect import (setup_indexes, 
+    get_connection as get_search_connection)
+from cn_search_py.collections import ItemCollection
 from bson import objectid
 
 logger = logging.getLogger(__name__)
 
 db = get_connection()
+search_db = get_search_connection()
+items = ItemCollection(search_db)
 
 app_queue = Queue(settings.QUEUE_NAME, host=settings.REDIS_HOST, 
             port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
@@ -63,6 +68,10 @@ def post_suck(source, last_retrieved=None):
 
 
 def save_item(data):
+    item = items.make_model(data)
+    saved = item.save()
+
+    """
     item = db.Item.find_and_modify(
         { 'remoteID': data['remoteID'], 'source': data['source'] },
         { '$set': data },
@@ -71,11 +80,12 @@ def save_item(data):
 
     if not item:
         item = db.Item.one({ 'remoteID': data['remoteID'], 'source': data['source'] })
+    """
 
-    id_str = str(item['_id'])
+    id_str = str(saved['_id'])
     logger.info("Pushing task "+id_str)
     transform_queue.push(json.dumps({'id': id_str}))
-    return item
+    return saved
 
 
 def handle_broken_source(source, data, error):
@@ -108,6 +118,7 @@ def process_task(task):
         
 
 def start_app():
+    setup_indexes(search_db)
     setup_sources(sucka_names)
 
     while True:
