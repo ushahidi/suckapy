@@ -59,9 +59,11 @@ def post_suck(source, last_retrieved=None):
     source['lastRun'] = datetime.now()
     source['hasRun'] = True
 
+    """
     if last_retrieved:
         del last_retrieved['_id']
         source['lastRetrieved'] = json.loads(last_retrieved.to_json())
+    """
 
     source.save()
     return source

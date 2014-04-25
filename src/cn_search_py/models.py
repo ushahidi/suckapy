@@ -3,6 +3,14 @@ from .exceptions import DoesNotExist, MultipleObjectsReturned
 
 
 class Model(object):
+    def __init__(self, data, collection):
+        self._collection = collection
+        self.conn = collection.conn
+        self.data = self.format_data(self.set_defaults(data))
+        self.doc_type = self._collection.doc_type
+        self.index = self._collection.index
+
+
     def _index(self, **kwargs):
         if 'force_new' in kwargs or 'id' not in kwargs:
             kwargs['op_type'] = 'create'
@@ -43,14 +51,6 @@ class Model(object):
 
 
 class Item(Model):
-    def __init__(self, data, collection):
-        self._collection = collection
-        self.conn = collection.conn
-        self.data = self.format_data(self.set_defaults(data))
-        self.doc_type = self._collection.doc_type
-        self.index = self._collection.index
-
-
     def set_defaults(self, data):
         defaults = {
             'license': 'unknown',
