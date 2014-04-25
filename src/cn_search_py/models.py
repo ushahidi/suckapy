@@ -66,13 +66,6 @@ class Item(Model):
         return data
 
 
-    def format_data(self, data):
-        if 'geo' in data and 'coords' in data['geo']:
-            data['geo']['coords'] = data['geo']['coords'][::-1]
-
-        return data
-
-
     def save(self, refresh=False):
         upsert_params = [
             {

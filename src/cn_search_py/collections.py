@@ -68,16 +68,10 @@ class ItemCollection(Collection):
     index = 'item'
     mapping = {
         'properties': {
-            'data': {
-                'type': 'object',
+            'geo': {
                 'properties': {
-                    'geo': {
-                        'type': 'object',
-                        'properties': {
-                            'coords': {
-                                'type': 'geo_point'
-                            }
-                        }
+                    'coords': {
+                        'type': 'geo_point'
                     }
                 }
             }
