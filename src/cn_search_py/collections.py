@@ -1,8 +1,10 @@
+import logging
 from elasticsearch import Elasticsearch
 from config import settings
 from .models import Item
 from .exceptions import DoesNotExist, MultipleObjectsReturned
 
+logger = logging.getLogger(__name__)
 
 class Collection(object):
     def make_model(self, data={}):
@@ -30,8 +32,8 @@ class Collection(object):
             "and": _params
         }
 
-    
-    def get(self, params):
+
+    def _search(self, params, limit=100, offset=0):
         body = {
             "query": {
                 "filtered" : {
@@ -40,9 +42,20 @@ class Collection(object):
             }
         }
 
+        kwargs = {
+            'index': self.index,
+            'doc_type': self.doc_type,
+            'body': body,
 
-        res = self.conn.search(index=self.index, doc_type=self.doc_type, 
-            body=body)
+        }
+
+        res = self.conn.search(**kwargs)
+
+        return res
+
+    
+    def get(self, params):
+        res = self._search(params)
 
         if res['hits']['total'] == 1:
             doc = res['hits']['hits'][0]['_source']
@@ -62,6 +75,10 @@ class Collection(object):
             (self.model.__name__, num, params))
 
 
+    def find(self, params):
+        res = self._search(params)
+
+
 class ItemCollection(Collection):
     model = Item
     doc_type = 'item-type'
@@ -74,6 +91,10 @@ class ItemCollection(Collection):
                         'type': 'geo_point'
                     }
                 }
+            },
+            'remoteID': {
+                "type" : "string", 
+                "index" : "not_analyzed"
             }
         }
     }

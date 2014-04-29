@@ -1,6 +1,8 @@
+import logging
 from datetime import datetime
 from .exceptions import DoesNotExist, MultipleObjectsReturned
 
+logger = logging.getLogger(__name__)
 
 class Model(object):
     def __init__(self, data, collection):
@@ -26,19 +28,22 @@ class Model(object):
         if force_new:
             return self._index(body=self.data, force_new=True, refresh=refresh)
         else:
-            return self.upsert(upsert_params, refresh=refresh)
+            return self.upsert(params=upsert_params, refresh=refresh)
 
     
     def upsert(self, params = [], refresh=False):
         if params:
+            logger.info("Have params")
             try:
                 doc = self._collection.get(params)
                 return self._index(body=self.data, id=doc['id'], 
                     refresh=refresh)
             except DoesNotExist:
+                logger.info("Did not find doc for " + str(params))
                 return self._index(body=self.data, force_new=True, 
                     refresh=refresh)
         else:
+            logger.info("Upsert called without params")
             return self._index(body=self.data, force_new=True, 
                 refresh=refresh)
 

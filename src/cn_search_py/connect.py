@@ -4,7 +4,8 @@ from .collections import ItemCollection
 
 
 def get_connection():
-    return Elasticsearch(host=settings.ES_HOST, port=settings.ES_PORT)
+    return Elasticsearch(host=settings.ES_HOST, port=settings.ES_PORT, 
+      http_auth=settings.ES_AUTH)
 
 def setup_indexes(conn):
     conn.indices.create(ItemCollection.index, ignore=400)
