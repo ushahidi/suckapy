@@ -74,7 +74,13 @@ def is_relevant(record):
     if record['EventRootCode'][0] == '0':
         return False
 
-    if int(record['EventRootCode']) < 14:
+    # EventRootCodes lower than 14 are mostly administrative. Boring.
+    # Sometimes the EventRootCode is an unpredictable string like --, hence
+    # the try/catch
+    try:
+        if int(record['EventRootCode']) < 14:
+            return False
+    except:
         return False
 
     return True
