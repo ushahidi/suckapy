@@ -59,11 +59,8 @@ def post_suck(source, last_retrieved=None):
     source['lastRun'] = datetime.now()
     source['hasRun'] = True
 
-    """
     if last_retrieved:
-        del last_retrieved['_id']
-        source['lastRetrieved'] = json.loads(last_retrieved.to_json())
-    """
+        source['lastRetrieved'] = last_retrieved
 
     source.save()
     return source
@@ -84,10 +81,13 @@ def save_item(data):
         item = db.Item.one({ 'remoteID': data['remoteID'], 'source': data['source'] })
     """
 
-    id_str = str(saved['_id'])
-    logger.info("Pushing task "+id_str)
-    transform_queue.push(json.dumps({'id': id_str}))
-    return saved
+    if saved:
+        id_str = str(saved['_id'])
+        logger.info("Pushing task "+id_str)
+        transform_queue.push(json.dumps({'id': id_str}))
+        return saved
+
+    return None
 
 
 def handle_broken_source(source, data, error):
@@ -103,7 +103,7 @@ def do_suck(source):
         logger.warn('no sucka found for ' + source['sourceType'])
         return False
 
-    last_retrieved = sucka.suck(save_item, handle_broken_source)
+    last_retrieved = sucka.suck(save_item, handle_broken_source, source)
     return post_suck(source, last_retrieved)
 
 
@@ -120,7 +120,6 @@ def process_task(task):
         
 
 def start_app():
-    setup_indexes(search_db)
     setup_sources(sucka_names)
 
     while True:

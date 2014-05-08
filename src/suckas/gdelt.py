@@ -25,7 +25,7 @@ definition = {
 }
 
 
-def suck(save_item, handle_error):
+def suck(save_item, handle_error, source):
     cur_dir = os.path.dirname(os.path.realpath(__file__))
     local_filename = cur_dir + '/data/gdelt/latest-gdelt-daily.zip'
     d = date.today() - timedelta(days=2)

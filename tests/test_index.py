@@ -3,15 +3,17 @@ os.environ['SUCKAPY'] = 'test'
 
 import logging
 import datetime
-from cn_search_py import connect, collections
+from cn_search_py import connect, collections, utils
 
 logger = logging.getLogger(__name__)
 
 def test():
+    utils.delete_index('test_index')
+    utils.create_index('test_index')
+    utils.update_aliases('test_index', 'test_index')
+
     search_db = connect.get_connection()
-    search_db.indices.delete(index='item', ignore=[400, 404])
-    items = collections.ItemCollection(search_db)
-    connect.setup_indexes(search_db)
+    items = collections.ItemCollection(search_db, index='test_index')
 
     data = {
         'remoteID': '1',
@@ -26,7 +28,7 @@ def test():
     item = items.make_model(data)
     indexed = item.save(refresh=True)
 
-    assert indexed['created'] is True
+    assert 'created' in indexed
 
     new_item = items.make_model(data)
     new_indexed = new_item.save()
@@ -42,4 +44,6 @@ def test():
 
     item = items.get(params)
     assert item['id'] == indexed['_id']
+
+    utils.delete_index('test_index')
 

@@ -1,6 +1,5 @@
 import logging
 from elasticsearch import Elasticsearch
-from config import settings
 from .models import Item
 from .exceptions import DoesNotExist, MultipleObjectsReturned
 
@@ -45,8 +44,7 @@ class Collection(object):
         kwargs = {
             'index': self.index,
             'doc_type': self.doc_type,
-            'body': body,
-
+            'body': body
         }
 
         res = self.conn.search(**kwargs)
@@ -69,10 +67,10 @@ class Collection(object):
                 "Lookup parameters were %s" %
                 (self.model.__name__, params))
 
-        raise self.model.MultipleObjectsReturned(
+        raise MultipleObjectsReturned(
             "get() returned more than one %s -- it returned %s! "
             "Lookup parameters were %s" %
-            (self.model.__name__, num, params))
+            (self.model.__name__, res['hits']['total'], params))
 
 
     def find(self, params):
@@ -82,7 +80,7 @@ class Collection(object):
 class ItemCollection(Collection):
     model = Item
     doc_type = 'item-type'
-    index = 'item'
+    index = 'item_alias'
     mapping = {
         'properties': {
             'geo': {
@@ -95,11 +93,21 @@ class ItemCollection(Collection):
             'remoteID': {
                 "type" : "string", 
                 "index" : "not_analyzed"
+            },
+            'tags': {
+                'properties': {
+                    'name': {
+                        'type': 'string',
+                        'index': 'not_analyzed'
+                    }
+                }
             }
         }
     }
 
 
-    def __init__(self, conn):
+    def __init__(self, conn, index=None):
         self.conn = conn
+        if index:
+            self.index = index
 

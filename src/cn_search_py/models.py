@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from .exceptions import DoesNotExist, MultipleObjectsReturned
+from .data import language_codes
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,8 @@ class Model(object):
 
         kwargs['index'] = self.index
         kwargs['doc_type'] = self.doc_type
+
+        print kwargs
 
         return self.conn.index(**kwargs)
 
@@ -42,6 +45,10 @@ class Model(object):
                 logger.info("Did not find doc for " + str(params))
                 return self._index(body=self.data, force_new=True, 
                     refresh=refresh)
+            except MultipleObjectsReturned:
+                logger.info("Got more than one object for "+str(params))
+                return None
+
         else:
             logger.info("Upsert called without params")
             return self._index(body=self.data, force_new=True, 
@@ -60,8 +67,7 @@ class Item(Model):
         defaults = {
             'license': 'unknown',
             'lifespan': 'temporary',
-            'createdAt': datetime.now(),
-            'updatedAt': datetime.now()
+            'createdAt': datetime.now()
         }
 
         for key,val in defaults.iteritems():
@@ -85,6 +91,36 @@ class Item(Model):
 
         return super(Item, self).save(upsert_params=upsert_params, 
             refresh=refresh)
+
+
+    def format_data(self, data):
+        data['updatedAt'] = datetime.now()
+
+        if 'publishedAt' not in data:
+            data['publishedAt'] = data['createdAt']
+
+        if 'language' in data and 'code' in data['language']:
+            if data['language']['code'] in language_codes.codes:
+                data['language'] = language_codes[data['language']['code']]
+
+
+        search_text = ''
+
+        if 'summary' in data:
+            search_text += data['summary']
+
+        if 'content' in data:
+            search_text += ' ' + data['content']
+
+        if 'tags' in data:
+            tag_text = ' '.join([x['name'] for x in data['tags']])
+            search_text += tag_text
+
+        data['searchText'] = search_text
+
+        return data
+
+
 
         
 
