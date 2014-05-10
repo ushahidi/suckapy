@@ -66,20 +66,9 @@ def post_suck(source, last_retrieved=None):
     return source
 
 
-def save_item(data):
+def save_item(data, refresh=False):
     item = items.make_model(data)
-    saved = item.save()
-
-    """
-    item = db.Item.find_and_modify(
-        { 'remoteID': data['remoteID'], 'source': data['source'] },
-        { '$set': data },
-        { 'upsert': True, 'new': True }
-    )
-
-    if not item:
-        item = db.Item.one({ 'remoteID': data['remoteID'], 'source': data['source'] })
-    """
+    saved = item.save(refresh=refresh)
 
     if saved:
         id_str = str(saved['_id'])

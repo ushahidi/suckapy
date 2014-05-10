@@ -38,7 +38,7 @@ def suck(save_item, handle_error, source):
             #print search_result
             item = transform(search_result)
             if item:
-                save_item(item)
+                save_item(item, refresh=True)
 
 
 def transform(record):

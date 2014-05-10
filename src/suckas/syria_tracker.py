@@ -20,14 +20,19 @@ definition = {
 def suck(save_item, handle_error, source):
     last_retrieved = None
 
-    url = 'http://syriatracker.crowdmap.com/api?task=incidents&limit=100'
+    url = 'http://syriatracker.crowdmap.com/api?task=incidents&limit=198'
     if 'lastRetrieved' in source:
         url += '&by=sinceid&id=' + source['lastRetrieved']
         last_retrieved = source['lastRetrieved']
 
     r = requests.get(url)
     if r.status_code == 200:
-        res_json = r.json()
+        try:
+            res_json = r.json()
+        except:
+            print 'JSON parse failed'
+            return last_retrieved 
+        
         if 'error' in res_json and res_json['error']['code'] == '007':
             return last_retrieved
         
@@ -37,6 +42,8 @@ def suck(save_item, handle_error, source):
         for incident in incidents:
             item = transform(incident)
             save_item(item)
+    else:
+        print 'Request failed'
 
     return last_retrieved
 

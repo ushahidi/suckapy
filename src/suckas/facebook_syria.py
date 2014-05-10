@@ -42,7 +42,7 @@ def suck(save_item, handle_error, source):
             lr_key = username.replace('.','|')
             
             # Don't bother making requests for a page that no longer exists
-            if lr_key in source['lastRetrieved'] and source['lastRetrieved'] == 'Failing':
+            if 'lastRetrieved' in source and lr_key in source['lastRetrieved'] and source['lastRetrieved'] == 'Failing':
                 continue
             
             got_content = get_content(username, graph, source, save_item)
