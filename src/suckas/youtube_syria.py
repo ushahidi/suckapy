@@ -27,18 +27,30 @@ def suck(save_item, handle_error, source):
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
         developerKey=DEVELOPER_KEY)
 
+    kwargs = {
+        'part': 'id,snippet',
+        'maxResults': 25,
+        'order': 'date'
+    }
+
+    if not 'lastRetrieved' in source:
+        source['lastRetrieved'] = {}
+
     for i in youtube_syria_channel_ids.ids:
-        search_response = youtube.search().list(
-            part="id,snippet",
-            channelId=i,
-            maxResults=25
-        ).execute()
+        kwargs['channelId'] = i
+        
+        if i in source['lastRetrieved']:
+            kwargs['publishedAfter'] = source['lastRetrieved'][i].strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        search_response = youtube.search().list(**kwargs).execute()
 
         for search_result in search_response.get("items", []):
             #print search_result
             item = transform(search_result)
             if item:
                 save_item(item)
+
+        source['lastRetrieved'][i] = datetime.now()
 
 
 def transform(record):
