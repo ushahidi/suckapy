@@ -30,7 +30,7 @@ def suck(save_item, handle_error, source):
     for i in youtube_syria_channel_ids.ids:
         search_response = youtube.search().list(
             part="id,snippet",
-            channelId='UC-LfCp5I_UdLlGLjO8BHhaQ',
+            channelId=i,
             maxResults=25
         ).execute()
 
@@ -38,7 +38,7 @@ def suck(save_item, handle_error, source):
             #print search_result
             item = transform(search_result)
             if item:
-                save_item(item, refresh=True)
+                save_item(item)
 
 
 def transform(record):

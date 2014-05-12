@@ -68,7 +68,10 @@ def get_content(username, graph, source, save_item):
     if 'lastRetrieved' in source and username in source['lastRetrieved']:
         kwargs['since'] = source['lastRetrieved'][username]
 
-    posts = graph.get(**kwargs)
+    try:
+        posts = graph.get(**kwargs)
+    except:
+        return False
 
     for post in posts['data']:
         item = transform(post, page)
