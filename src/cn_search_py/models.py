@@ -22,8 +22,6 @@ class Model(object):
         kwargs['index'] = self.index
         kwargs['doc_type'] = self.doc_type
 
-        print kwargs
-
         return self.conn.index(**kwargs)
 
 
@@ -36,7 +34,6 @@ class Model(object):
     
     def upsert(self, params = [], refresh=False):
         if params:
-            logger.info("Have params")
             try:
                 doc = self._collection.get(params)
                 return self._index(body=self.data, id=doc['id'], 
@@ -50,7 +47,6 @@ class Model(object):
                 return None
 
         else:
-            logger.info("Upsert called without params")
             return self._index(body=self.data, force_new=True, 
                 refresh=refresh)
 

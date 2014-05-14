@@ -71,9 +71,10 @@ def save_item(data, refresh=False):
     saved = item.save(refresh=refresh)
 
     if saved:
-        id_str = str(saved['_id'])
-        logger.info("Pushing task "+id_str)
-        transform_queue.push(json.dumps({'id': id_str}))
+        if 'created' in saved and saved['created']:
+            id_str = str(saved['_id'])
+            logger.info("Pushing task "+id_str)
+            transform_queue.push(json.dumps({'id': id_str}))
         return saved
 
     return None

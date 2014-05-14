@@ -29,11 +29,17 @@ def test():
     indexed = item.save(refresh=True)
 
     assert 'created' in indexed
+    print "------- INSERTED ----------"
+    print indexed
 
     new_item = items.make_model(data)
     new_indexed = new_item.save()
 
+    print "------- UPSERTED ---------"
+    print new_indexed
+
     assert new_indexed['_id'] == indexed['_id']
+    assert 1 == 2
 
     params = [
         {
