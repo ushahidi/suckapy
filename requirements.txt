@@ -10,3 +10,4 @@ python-dateutil==2.2
 google-api-python-client==1.2
 oauth2client==1.2
 beautifulsoup4==4.3.2
+TwitterAPI==2.1.13
