@@ -19,7 +19,7 @@ def staging():
     env.password = deploy_config.STAGING_PASSWORD
     env.key_filename = ''
     env.branch = 'development'
-    env.upstart_script = 'suckapy.conf'
+    env.upstart_script = 'suckapy'
     env.settings_file = 'staging_settings.py'
     env.app_env = 'staging'
 
@@ -31,7 +31,7 @@ def production():
     env.password = deploy_config.PROD_PASSWORD
     env.key_filename = ''
     env.branch = 'master'
-    env.upstart_script = 'suckapy_prod.conf'
+    env.upstart_script = 'suckapy_prod'
     env.settings_file = 'production_settings.py'
     env.app_env = 'production'
     env.port = 15922
@@ -52,7 +52,7 @@ def check_upstart():
     Checks if uwsgi upstart exists; if not, upstart job is created.
     If it exists and is different from the checked-in version, it's updated.
     """
-    conf = env.upstart_script
+    conf = env.upstart_script+'.conf'
     sudo('test -f /etc/init/'+conf+' || cp etc/'+conf+' /etc/init')
     sudo('diff etc/'+conf+' /etc/init/'+conf+' || cp etc/'+conf+' /etc/init')
 
@@ -91,7 +91,7 @@ def do_release(branch):
         run('pip install -r requirements.txt')
     copy_private_files()
     check_upstart()
-    sudo('service suckapy stop; service suckapy start SUCKAPY=%s' % env.app_env)
+    sudo('service '+env.upstart_script' stop; service '+env.upstart_script+' start SUCKAPY=%s' % env.app_env)
 
 
 def record_release():
