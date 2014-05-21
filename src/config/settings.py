@@ -25,4 +25,5 @@ else:
         from development_settings import *
         logger.info("Using SUCKAPY=%s" % environ)
     except ImportError, ex:
+        logger.warn("No environ found, SUCKAPY not set")
         pass
