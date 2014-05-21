@@ -52,8 +52,9 @@ def check_upstart():
     Checks if uwsgi upstart exists; if not, upstart job is created.
     If it exists and is different from the checked-in version, it's updated.
     """
-    sudo('test -f /etc/init/suckapy.conf || cp etc/suckapy.conf /etc/init')
-    sudo('diff etc/suckapy.conf /etc/init/suckapy.conf || cp etc/suckapy.conf /etc/init')
+    conf = env.upstart_script
+    sudo('test -f /etc/init/'+conf+' || cp etc/'+conf+' /etc/init')
+    sudo('diff etc/'+conf+' /etc/init/'+conf+' || cp etc/'+conf+' /etc/init')
 
 
 @task
