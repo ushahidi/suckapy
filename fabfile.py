@@ -26,14 +26,15 @@ def staging():
 
 @task
 def production():
-    env.host_string = ''
-    env.user = ''
-    env.password = ''
+    env.host_string = deploy_config.PROD_HOST
+    env.user = deploy_config.PROD_USER
+    env.password = deploy_config.PROD_PASSWORD
     env.key_filename = ''
     env.branch = 'master'
-    env.upstart_script = 'suckapy.conf'
+    env.upstart_script = 'suckapy_prod.conf'
     env.settings_file = 'production_settings.py'
     env.app_env = 'production'
+    env.port = 15922
 
 
 def install_deps():
