@@ -91,7 +91,7 @@ def do_release(branch):
         run('pip install -r requirements.txt')
     copy_private_files()
     check_upstart()
-    sudo('service '+env.upstart_script' stop; service '+env.upstart_script+' start SUCKAPY=%s' % env.app_env)
+    sudo('service '+env.upstart_script+' stop; service '+env.upstart_script+' start SUCKAPY=%s' % env.app_env)
 
 
 def record_release():
