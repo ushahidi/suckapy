@@ -21,12 +21,10 @@ db = get_connection()
 search_db = get_search_connection()
 items = ItemCollection(search_db)
 
-app_queue = Queue(settings.QUEUE_NAME, host=settings.APP_REDIS_HOST, 
-            port=settings.APP_REDIS_PORT, password=settings.APP_REDIS_PASSWORD)
-
-transform_queue = Queue(settings.TRANSFORM_QUEUE_NAME, 
-            host=settings.TRANSFORM_REDIS_HOST, port=settings.TRANSFORM_REDIS_PORT, 
-            password=settings.TRANSFORM_REDIS_PASSWORD)
+app_queue = Queue(settings.QUEUE_NAME, host=settings.REDIS_HOST, 
+            port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
+transform_queue = Queue(settings.TRANSFORM_QUEUE_NAME, host=settings.REDIS_HOST, 
+            port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
 
 app_queue.serializer = json
 transform_queue.serializer = json
