@@ -15,7 +15,7 @@ from cn_search_py.connect import (setup_indexes,
 from cn_search_py.collections import ItemCollection
 from bson import objectid
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('suckapy')
 
 db = get_connection()
 search_db = get_search_connection()
