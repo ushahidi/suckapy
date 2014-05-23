@@ -13,7 +13,7 @@ definition = {
     'sourceType': 'twitter',
     'language': 'python',
     'frequency': 'repeats',
-    'repeatsEvery': 'hour',
+    'repeatsEvery': 'minute',
     'startDate': datetime.strptime('20140507', "%Y%m%d"),
     'endDate': datetime.now() + timedelta(days=365),
     'description': description
@@ -52,14 +52,14 @@ def suck(save_item, handle_error, source):
                     new_since_id = record['id_str']
                     source['lastRetrieved'][lr_key] = new_since_id
 
-                item = transform(record)
+                item = transform(record, l['slug'])
                 save_item(item)
 
     
     return source['lastRetrieved']
 
 
-def transform(record):
+def transform(record, slug):
     data = {
         'remoteID': record['id_str'],
         'author': {
@@ -71,6 +71,9 @@ def transform(record):
         'content': record['text'],
         'publishedAt': parse(record['created_at']),
         'geo': {
+            'addressComponents': {
+                'adminArea1': slug.capitalize()
+            },
             'locationIdentifiers': {
                 'authorLocationName': record['user']['location'],
                 'authorTimeZone': record['user']['time_zone']
