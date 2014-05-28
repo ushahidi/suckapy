@@ -29,6 +29,7 @@ def suck(save_item, handle_error, source):
     cur_dir = os.path.dirname(os.path.realpath(__file__))
     local_filename = cur_dir + '/data/gdelt/latest-gdelt-daily.zip'
     d = date.today() - timedelta(days=2)
+    
     d_str = d.strftime("%Y%m%d")
     zip_url = 'http://data.gdeltproject.org/events/' + d_str + '.export.CSV.zip'
 
@@ -82,6 +83,12 @@ def is_relevant(record):
             return False
     except:
         return False
+
+    #addy = get_address(record)
+    #if addy and 'Nigeria' in addy:
+    #    return True
+
+    #return False
 
     return True
 
