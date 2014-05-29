@@ -22,6 +22,9 @@ class Model(object):
         kwargs['index'] = self.index
         kwargs['doc_type'] = self.doc_type
 
+        if 'id' not in kwargs:
+            kwargs['refresh'] = True
+
         return self.conn.index(**kwargs)
 
 
