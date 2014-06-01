@@ -34,7 +34,7 @@ def suck(save_item, handle_error, source):
     else:
         last_id = 0
     
-    tag_media, next = api.tag_recent_media(50, 0, 'thaicoup')
+    tag_media, next = api.tag_recent_media(50, last_id, 'thaicoup')
     
     source['lastRetrieved'] = {
         'thaicoup': 0
@@ -44,36 +44,6 @@ def suck(save_item, handle_error, source):
     for media in tag_media:
         item = transform(media)
         save_item(item)
-
-    """
-    if 'lastRetrieved' not in source:
-        source['lastRetrieved'] = {}
-
-    for l in lists.items:
-        lr_key = l['owner_screen_name'] + '|' + l['slug']
-
-        request_filters = {
-            'slug':l['slug'], 
-            'owner_screen_name':l['owner_screen_name'],
-            'per_page': 100
-        }
-
-        if lr_key in source['lastRetrieved']:
-            request_filters['since_id'] = source['lastRetrieved'][lr_key]
-
-        r = api.request('lists/statuses', request_filters)
-        
-        new_since_id = None
-
-        if r.status_code == 200:
-            for record in r.get_iterator():
-                if not new_since_id:
-                    new_since_id = record['id_str']
-                    source['lastRetrieved'][lr_key] = new_since_id
-
-                item = transform(record, l['slug'])
-                save_item(item)
-    """
 
     
     return source['lastRetrieved']
@@ -98,7 +68,8 @@ def transform(record):
         'source': 'instagram',
         'lifespan': 'temporary',
         'image': record.get_standard_resolution_url(),
-        'fromURL': record.link
+        'fromURL': record.link,
+        'license': 'instagram'
     }
 
     if hasattr(record, 'location'):

@@ -108,7 +108,8 @@ def transform(record):
             }
         ],
         'publishedAt': parse(record['date']),
-        'fromURL': record['url']
+        'fromURL': record['url'],
+        'license': 'cc'
     }
 
     if 'video' in record and record['video'] and len(record['video'].strip()) > 0:

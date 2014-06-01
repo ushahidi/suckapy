@@ -23,7 +23,8 @@ def reindex(from_index, to_index):
 
     es_target = Elasticsearch(host=TO_ES_HOST, port=TO_ES_PORT, http_auth=TO_ES_AUTH)
 
-    #query = { "query" : { "match_all" : {} }}
+    query = { "query" : { "match_all" : {} }}
+    """
     query = {
         "query": {
             "filtered" : {
@@ -37,6 +38,7 @@ def reindex(from_index, to_index):
             }
         }
     }
+    """
 
     all_docs = scan(client = es_current, query = query, scroll= "5m", 
         index = from_index, doc_type = ItemCollection.doc_type)
@@ -82,6 +84,32 @@ def migrate_index(from_index, to_index):
     delete_index(from_index)
 
 
+def update_by_query():
+    es_target = Elasticsearch(host=TO_ES_HOST, port=TO_ES_PORT, http_auth=TO_ES_AUTH)
+
+    query = {
+        "query": {
+            "filtered" : {
+                "filter" : {
+                    "term" : {
+                        "source" : "instagram"
+                    }
+                }
+            }
+        }
+    }
+
+    all_docs = scan(client = es_target, query = query, scroll= "5m", 
+        index = 'item_alias', doc_type = ItemCollection.doc_type)
+
+    items = ItemCollection(es_target, index='item_alias')
+    for a in all_docs:
+        item = items.make_model(a['_source'])
+        item.data['license'] = 'instagram'
+        print 'storing ' + a['_id'] + ' from ' + item.data['source']
+        item._index(id=a['_id'], body=item.data)
+
+
 if __name__ == "__main__":
     args = sys.argv
 
@@ -99,3 +127,6 @@ if __name__ == "__main__":
 
     if args[1] == 'addalias':
         add_alias(args[2])
+
+    if args[1] == 'updatequery':
+        update_by_query()

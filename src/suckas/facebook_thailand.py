@@ -47,7 +47,7 @@ def suck(save_item, handle_error, source):
             if 'lastRetrieved' in source and lr_key in source['lastRetrieved'] and source['lastRetrieved'] == 'Failing':
                 continue
             
-            got_content = facebook_base.get_content(username, graph, source, save_item, admin1='Thailand', source_key='facebook_thailand')
+            got_content = facebook_base.get_content(username, graph, source, save_item, admin1='Thailand')
 
             if not got_content:
                 last_retrieved[lr_key] = 'Failing'

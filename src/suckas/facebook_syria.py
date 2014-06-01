@@ -56,7 +56,7 @@ def suck(save_item, handle_error, source):
     return last_retrieved
 
 
-def get_content(username, graph, source, save_item, admin1='Syria', source_key='facebook_syria'):
+def get_content(username, graph, source, save_item, admin1='Syria'):
     try:
         page = graph.get(username)
     except FacebookError:
@@ -75,14 +75,14 @@ def get_content(username, graph, source, save_item, admin1='Syria', source_key='
         return False
 
     for post in posts['data']:
-        item = transform(post, page, admin1, source_key)
+        item = transform(post, page, admin1)
         if item:
             save_item(item)
 
     return True
 
 
-def transform(record, page, admin1, source_key):
+def transform(record, page, admin1):
     if 'message' in record:
         message = record['message']
     elif 'story' in record:
@@ -107,7 +107,7 @@ def transform(record, page, admin1, source_key):
 
     data = {
         'remoteID': object_id,
-        'source': source_key,
+        'source': 'facebook',
         'content': message,
         'lifespan': 'temporary',
         'geo': {
@@ -116,7 +116,8 @@ def transform(record, page, admin1, source_key):
             }
         },
         'fromURL': 'http://facebook.com/' + object_id,
-        'publishedAt': parse(record['created_time'])
+        'publishedAt': parse(record['created_time']),
+        'license': 'facebook'
     }
 
     if 'picture' in record:

@@ -61,7 +61,7 @@ def transform(record):
                 'formattedAddress': record['incident']['incidenttitle']
             }
         },
-        'source': "syria_tracker",
+        'source': "ushahidi_syriatracker",
         'tags': [{'name': cat['category']['title'], 'confidence': 1} for cat in record['categories']]
     }
 

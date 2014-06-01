@@ -102,6 +102,11 @@ class Item(Model):
             if data['language']['code'] in language_codes.codes:
                 data['language'] = language_codes[data['language']['code']]
 
+        if 'summary' not in data and 'content' in data:
+            if len(data['content']) <= 100:
+                data['summary'] = data['content'] 
+            else: 
+                data['summary'] = data['content'][0:97]+'...'
 
         search_text = ''
 
@@ -118,8 +123,4 @@ class Item(Model):
         data['searchText'] = search_text
 
         return data
-
-
-
         
-

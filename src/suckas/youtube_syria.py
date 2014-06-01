@@ -60,7 +60,7 @@ def transform(record):
 
     item = {
         'remoteID': record['id']['videoId'],
-        'source': 'youtube_syria',
+        'source': 'youtube',
         'publishedAt': parse(record['snippet']['publishedAt'].replace(' ','')),
         'image': record['snippet']['thumbnails']['high']['url'].replace(' ',''),
         'summary': record['snippet']['title'],
@@ -70,7 +70,8 @@ def transform(record):
             'addressComponents': {
                 'adminArea1': 'Syria'
             }
-        } 
+        },
+        'license': 'youtube' 
     }
 
     return item

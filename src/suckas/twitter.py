@@ -84,7 +84,8 @@ def transform(record, slug):
             'code': record['lang']
         },
         'source': 'twitter',
-        'lifespan': 'temporary'
+        'lifespan': 'temporary',
+        'license': 'twitter'
     }
 
     if 'coords' in record and record['coords']:
