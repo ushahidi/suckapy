@@ -73,6 +73,7 @@ class Source(Document):
         'udpatedAt': datetime.datetime,
         'internalID': basestring,
         'sourceType': basestring,
+        'uniqueName': basestring,
         'frequency': basestring,
         'repeatsEvery': basestring,
         'hasRun': bool,

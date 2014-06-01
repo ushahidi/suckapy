@@ -12,7 +12,8 @@ courtesy of Eliot Higgins (aka Brown Moses) """
 
 definition = {
     'internalID': 'ee564003-c7be-49fe-bc3e-e2a0c40e55b1',
-    'sourceType': 'facebook_thailand',
+    'sourceType': 'facebook',
+    'uniqueName': 'facebook_thailand',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',

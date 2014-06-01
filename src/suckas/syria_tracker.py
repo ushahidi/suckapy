@@ -7,7 +7,8 @@ description = """ SyriaTracker Ushahidi instance. syriatracker.crowdmap.com """
 
 definition = {
     'internalID': 'fa08edfe-83f3-4a57-a968-e7d725a4325c',
-    'sourceType': "syria_tracker",
+    'sourceType': "ushahidi",
+    'uniqueName': "syria_tracker",
     'language': "python",
     'frequency': "repeats",
     'repeatsEvery': "hour",

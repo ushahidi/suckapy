@@ -11,7 +11,8 @@ courtesy of Eliot Higgins (aka Brown Moses) """
 
 definition = {
     'internalID': '89e2ee06-bce0-4613-a300-42223ed2c2fe',
-    'sourceType': 'facebook_syria',
+    'sourceType': 'facebook',
+    'uniqueName': 'facebook_syria',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',

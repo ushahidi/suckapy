@@ -48,7 +48,7 @@ def setup_sources(sucka_names):
 
 
 def get_sucka_for_source(source):
-    source_type = source['sourceType']
+    source_type = source['uniqueName']
     if source_type not in sucka_names:
         return None
 
@@ -95,7 +95,7 @@ def do_suck(source):
     sucka = get_sucka_for_source(source)
 
     if not sucka:
-        logger.warn('no sucka found for ' + source['sourceType'])
+        logger.warn('no sucka found for ' + source['uniqueName'])
         return False
 
     last_retrieved = sucka.suck(save_item, handle_broken_source, source)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     if len(args) > 1 and args[1] == '--source':
         source = db.Source.one({'_id': objectid.ObjectId(args[2])})
         if source:
-            logger.info("Sucking for source "+source['sourceType'])
+            logger.info("Sucking for source "+source['uniqueName'])
             do_suck(source)
     else:
         logger.warn("Starting suckapy")

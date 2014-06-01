@@ -16,6 +16,7 @@ description = """ GDELT is an ambitious project that attempts to capture
 definition = {
     'internalID': 'b43be343-fca5-4415-b424-19e21468c33d',
     'sourceType': 'gdelt',
+    'uniqueName': 'gdelt',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'day',

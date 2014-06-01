@@ -9,7 +9,8 @@ description = """ Requests to photos tagged to places in Instagram. """
 
 definition = {
     'internalID': 'b5583296-f0b3-496f-b090-bff59ff2b387',
-    'sourceType': 'instagrammer',
+    'sourceType': 'instagram',
+    'uniqueName': 'instagrammer',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'minute',

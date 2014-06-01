@@ -12,6 +12,7 @@ description = """ Violation Documentation Center in Syria is an independent,
 definition = {
     'internalID': '1e44370d-6dcc-4813-b6cc-b104beeddc22',
     'sourceType': 'vdc_syria',
+    'uniqueName': 'vdc_syria',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'day',

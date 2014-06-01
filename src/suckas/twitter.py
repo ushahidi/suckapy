@@ -11,6 +11,7 @@ description = """ First-person accounts from regions affected by conflict and di
 definition = {
     'internalID': 'b3bf1450-8768-4204-b82e-c14bd2de7bce',
     'sourceType': 'twitter',
+    'uniqueName': 'twitter',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'minute',

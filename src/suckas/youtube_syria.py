@@ -10,7 +10,8 @@ courtesy of Eliot Higgins (aka Brown Moses) """
 
 definition = {
     'internalID': '79fc92b8-c834-4bc7-b58a-6f12b1d4075e',
-    'sourceType': 'youtube_syria',
+    'sourceType': 'youtube',
+    'uniqueName': 'youtube_syria',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',
