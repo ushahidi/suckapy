@@ -59,9 +59,9 @@ def transform(record):
     def make_content(record):
         population = record['population'][0]
 
-        households = ''
+        households = ' individuals'
         if 'households' in population:
-            households = ' individuals from ' + population['households'] + ' households'
+            households = ' from ' + population['households'] + ' households'
 
         return population['value'] + households + ' reported at ' + record['name'] + ' in ' + record['country'] 
 
