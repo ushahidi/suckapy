@@ -92,7 +92,7 @@ def update_by_query():
             "filtered" : {
                 "filter" : {
                     "term" : {
-                        "source" : "instagram"
+                        "source" : "facebook_syria"
                     }
                 }
             }
@@ -105,7 +105,8 @@ def update_by_query():
     items = ItemCollection(es_target, index='item_alias')
     for a in all_docs:
         item = items.make_model(a['_source'])
-        item.data['license'] = 'instagram'
+        item.data['license'] = 'facebook'
+        item.data['source'] = 'facebook'
         print 'storing ' + a['_id'] + ' from ' + item.data['source']
         item._index(id=a['_id'], body=item.data)
 

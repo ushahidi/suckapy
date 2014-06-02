@@ -7,7 +7,7 @@ def test():
     #lr = twitter.suck('a','b',{})
     #print lr
 
-    item = twitter.transform(sample_tweet)
+    item = twitter.transform(sample_tweet, 'Syria')
     assert item['remoteID'] == sample_tweet['id_str']
     assert item['content'] == sample_tweet['text']
     assert item['image'] == sample_tweet['entities']['media'][0]['media_url']

@@ -48,6 +48,8 @@ def setup_sources(sucka_names):
 
 
 def get_sucka_for_source(source):
+    if 'uniqueName' not in source:
+        return None
     source_type = source['uniqueName']
     if source_type not in sucka_names:
         return None

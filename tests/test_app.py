@@ -16,7 +16,6 @@ def test():
     sources = app.setup_sources(sucka_names)
 
     assert len(sources) > 0
-    print sources
     assert 'internalID' in sources[0] and len(sources[0]['internalID']) > 0
 
     source = [s for s in sources if s['sourceType'] == 'test_sucka'][0]

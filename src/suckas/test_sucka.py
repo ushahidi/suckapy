@@ -3,6 +3,7 @@ import datetime
 definition = {
     'internalID': '265732a1-9bff-4e90-934d-c27be89c75ee',
     'sourceType': 'test_sucka',
+    'uniqueName': 'test_sucka',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',
