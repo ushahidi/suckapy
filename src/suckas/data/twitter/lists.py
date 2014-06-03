@@ -14,9 +14,9 @@ items = [
   {
     'slug': 'egypt',
     'owner_screen_name': 'jonathonmorgan'
-  },
-  {
-    'slug': 'thailand',
-    'owner_screen_name': 'jonathonmorgan'
   }
+  #{
+  #  'slug': 'thailand',
+  #  'owner_screen_name': 'jonathonmorgan'
+  #}
 ]
