@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from config import settings
 from TwitterAPI import TwitterAPI
 from dateutil.parser import parse
-from .data.twitter import lists
+from .data.twitter import lists, hashtags
 import csv
 import os
 
@@ -20,6 +20,7 @@ definition = {
     'description': description
 }
 
+def remove_non_ascii(s): return "".join(i for i in s if ord(i)<128)
 
 def suck(save_item, handle_error, source):
     api = TwitterAPI(settings.TWITTER['consumer_key'], 
@@ -31,19 +32,12 @@ def suck(save_item, handle_error, source):
     if 'lastRetrieved' not in source:
         source['lastRetrieved'] = {}
 
-    for l in lists.items:
-        lr_key = l['owner_screen_name'] + '|' + l['slug']
 
-        request_filters = {
-            'slug':l['slug'], 
-            'owner_screen_name':l['owner_screen_name'],
-            'per_page': 100
-        }
-
+    def get_and_save(endpoint, request_filters, lr_key, admin1):
         if lr_key in source['lastRetrieved']:
             request_filters['since_id'] = source['lastRetrieved'][lr_key]
 
-        r = api.request('lists/statuses', request_filters)
+        r = api.request(endpoint, request_filters)
         
         new_since_id = None
 
@@ -53,14 +47,37 @@ def suck(save_item, handle_error, source):
                     new_since_id = record['id_str']
                     source['lastRetrieved'][lr_key] = new_since_id
 
-                item = transform(record, l['slug'])
+                item = transform(record, admin1)
                 save_item(item)
+
+
+    for l in lists.items:
+        lr_key = l['owner_screen_name'] + '|' + l['slug']
+
+        request_filters = {
+            'slug':l['slug'], 
+            'owner_screen_name':l['owner_screen_name'],
+            'per_page': 100
+        }
+
+        get_and_save('lists/statuses', request_filters, lr_key, l['slug'].capitalize())
+
+
+    for h in hashtags.items:
+        lr_key = remove_non_ascii(h['hashtag'])
+
+        request_filters = {
+            'q': h['hashtag']
+        }
+
+        get_and_save('search/tweets', request_filters, lr_key, h['country'])
+        
 
     
     return source['lastRetrieved']
 
 
-def transform(record, slug):
+def transform(record, admin1):
     data = {
         'remoteID': record['id_str'],
         'author': {
@@ -73,7 +90,7 @@ def transform(record, slug):
         'publishedAt': parse(record['created_at']),
         'geo': {
             'addressComponents': {
-                'adminArea1': slug.capitalize()
+                'adminArea1': admin1
             },
             'locationIdentifiers': {
                 'authorLocationName': record['user']['location'],
