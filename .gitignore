@@ -8,3 +8,4 @@ venv
 .DS_Store
 deploy_config.py
 src/suckas/data/gdelt/latest-gdelt-daily.zip
+src/cn_search_py/utils.py
