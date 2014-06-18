@@ -72,7 +72,7 @@ def transform(record):
         'license': 'instagram'
     }
 
-    if hasattr(record, 'location'):
+    if hasattr(record, 'location') and hasattr(record.location.point, 'longitude'):
         data['geo']['coords'] = [record.location.point.longitude, record.location.point.latitude]
 
 

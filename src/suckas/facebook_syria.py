@@ -46,7 +46,12 @@ def suck(save_item, handle_error, source):
             if 'lastRetrieved' in source and lr_key in source['lastRetrieved'] and source['lastRetrieved'] == 'Failing':
                 continue
             
-            got_content = get_content(username, graph, source, save_item)
+            author = {
+                'name': row[1],
+                'username': username
+            }
+
+            got_content = get_content(username, graph, source, save_item, admin1='Syria', author=author)
 
             if not got_content:
                 last_retrieved[lr_key] = 'Failing'
@@ -56,7 +61,7 @@ def suck(save_item, handle_error, source):
     return last_retrieved
 
 
-def get_content(username, graph, source, save_item, admin1='Syria'):
+def get_content(username, graph, source, save_item, admin1=None, author=None):
     try:
         page = graph.get(username)
     except FacebookError:
@@ -75,14 +80,14 @@ def get_content(username, graph, source, save_item, admin1='Syria'):
         return False
 
     for post in posts['data']:
-        item = transform(post, page, admin1)
+        item = transform(post, page, admin1, author)
         if item:
             save_item(item)
 
     return True
 
 
-def transform(record, page, admin1):
+def transform(record, page, admin1, author):
     if 'message' in record:
         message = record['message']
     elif 'story' in record:
@@ -110,15 +115,23 @@ def transform(record, page, admin1):
         'source': 'facebook',
         'content': message,
         'lifespan': 'temporary',
-        'geo': {
-            'addressComponents': {
-                'adminArea1': admin1
-            }
-        },
+        'geo': {},
         'fromURL': 'http://facebook.com/' + object_id,
         'publishedAt': parse(record['created_time']),
         'license': 'facebook'
     }
+
+    if admin1:
+        data['geo']['addressComponents'] = {
+            'adminArea1': admin1
+        }
+
+    if author:
+        data['author'] = {
+            'name': author['name'],
+            'username': author['username'],
+            'remoteID': author['username']
+        }
 
     if 'picture' in record:
         data['image'] = record['picture']

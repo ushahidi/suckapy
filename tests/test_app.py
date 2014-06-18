@@ -15,6 +15,10 @@ def test():
 
     sources = app.setup_sources(sucka_names)
 
+    print "|||||||| ==================== ||||||||||||||"
+    print sources
+    print "|||||||| ==================== ||||||||||||||"
+
     assert len(sources) > 0
     assert 'internalID' in sources[0] and len(sources[0]['internalID']) > 0
 
