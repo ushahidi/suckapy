@@ -7,7 +7,7 @@ from dateutil.parser import parse
 description = """ WHO Ebola virus disease reports """
 
 definition = {
-    'internalID': '1e44370d-6dcc-4813-b6cc-b104beeddc22',
+    'internalID': 'abf592b2-98f3-4b53-83da-843148505fe6',
     'sourceType': 'who',
     'uniqueName': 'who_ebola',
     'language': 'python',
