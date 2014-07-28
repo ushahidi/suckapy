@@ -16,5 +16,10 @@ items = [
   {
     'hashtag': '#CopaPraQuem',
     'country': 'Brazil'
+  },
+  {
+    'hashtag': '#wali',
+    'country': 'United States',
+    'state': 'Hawaii'
   }
 ]
