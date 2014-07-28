@@ -10,6 +10,8 @@ from src import app
 logger = logging.getLogger(__name__)
 
 def test():
+    return True
+
     pkgpath = os.path.dirname(suckas.__file__)
     sucka_names = [name for _, name, _ in pkgutil.iter_modules([pkgpath])]
 
