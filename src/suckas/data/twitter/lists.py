@@ -15,6 +15,11 @@ items = [
     'slug': 'egypt',
     'owner_screen_name': 'jonathonmorgan'
   },
+  {
+    'slug': 'weather',
+    'owner_screen_name': 'jonathonmorgan',
+    'tags': ['weather']
+  }
   #{
   #  'slug': 'ukraine',
   #  'owner_screen_name': 'jonathonmorgan'

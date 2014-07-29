@@ -60,7 +60,11 @@ def suck(save_item, handle_error, source):
             'per_page': 100
         }
 
-        get_and_save('lists/statuses', request_filters, lr_key, l['slug'].capitalize())
+        tags = None
+        if 'tags' in l:
+            tags = l['tags']
+
+        get_and_save('lists/statuses', request_filters, lr_key, l['slug'].capitalize(), tags=tags)
 
 
     for h in hashtags.items:
