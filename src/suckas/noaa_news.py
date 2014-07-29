@@ -4,12 +4,12 @@ from dateutil.parser import parse
 import string
 import feedparser
 
-description = """ Current Watches, Warnings and Advisories for the United States Issued by the National Weather Service """
+description = """ Latest Weather News Headlines for the United States Issued by the National Weather Service """
 
 definition = {
-    'internalID': '32ad9f25-d2e0-4ac1-8c21-fe9bb432f030',
+    'internalID': 'eecdca54-b960-4a0c-b7f5-f45df6075db9',
     'sourceType': 'noaa',
-    'uniqueName': 'noaa_alerts',
+    'uniqueName': 'noaa_news',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',
@@ -25,7 +25,7 @@ def make_id(record):
 def suck(save_item, handle_error, source):
     feeds = [
         {
-            'url': 'http://alerts.weather.gov/cap/us.php?x=0',
+            'url': 'http://www.weather.gov/rss_page.php?site_name=nws',
             'tags': ['severe-weather']
         }
     ]
@@ -43,10 +43,7 @@ def transform(record, tags):
 
     item = {
         'remoteID': make_id(record),
-        'author': {
-            'remoteID': record.author
-        },
-        'source': 'noaa_alerts',
+        'source': 'noaa_news',
         'content': record.summary,
         'summary': record.title,
         'tags': [{'name':tag, 'confidence':1} for tag in tags],
@@ -54,12 +51,6 @@ def transform(record, tags):
         'license': 'unknown',
         'fromURL': record.link
     }
-
-    coord_str = record.cap_polygon.split(' ')[0].split(',')[::-1]
-    if len(coord_str) > 1:
-        item['geo'] = {
-            'coords': [float(coord) for coord in coord_str]
-        }
 
     return item
 

@@ -1,4 +1,4 @@
-from src.suckas import noaa_alerts
+from src.suckas import nwcg
 from datetime import datetime
 import os
 
@@ -19,4 +19,4 @@ def test():
             assert 'name' in tag
             assert tag['confidence'] == 1
 
-    lr = noaa_alerts.suck(asserter,'b',{})
+    lr = nwcg.suck(asserter,'b',{})

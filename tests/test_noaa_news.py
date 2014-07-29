@@ -1,4 +1,4 @@
-from src.suckas import noaa_alerts
+from src.suckas import noaa_news
 from datetime import datetime
 import os
 
@@ -19,4 +19,4 @@ def test():
             assert 'name' in tag
             assert tag['confidence'] == 1
 
-    lr = noaa_alerts.suck(asserter,'b',{})
+    lr = noaa_news.suck(asserter,'b',{})

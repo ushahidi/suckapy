@@ -51,7 +51,7 @@ def transform(record, tags):
         'author': {
             'remoteID': record.author
         },
-        'source': 'noaa',
+        'source': 'ptwc',
         'content': record.summary,
         'summary': record.title,
         'tags': [{'name':tag, 'confidence':1} for tag in tags],

@@ -4,12 +4,12 @@ from dateutil.parser import parse
 import string
 import feedparser
 
-description = """ Current Watches, Warnings and Advisories for the United States Issued by the National Weather Service """
+description = """ NWCG is an operational group designed to coordinate programs of the participating wildfire management agencies """
 
 definition = {
-    'internalID': '32ad9f25-d2e0-4ac1-8c21-fe9bb432f030',
-    'sourceType': 'noaa',
-    'uniqueName': 'noaa_alerts',
+    'internalID': '6c8fc99f-4279-4405-9340-6d95b8662b6d',
+    'sourceType': 'nwcg',
+    'uniqueName': 'nwcg',
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',
@@ -25,8 +25,8 @@ def make_id(record):
 def suck(save_item, handle_error, source):
     feeds = [
         {
-            'url': 'http://alerts.weather.gov/cap/us.php?x=0',
-            'tags': ['severe-weather']
+            'url': 'http://inciweb.nwcg.gov/feeds/rss/incidents/',
+            'tags': ['wildfire']
         }
     ]
 
@@ -43,23 +43,17 @@ def transform(record, tags):
 
     item = {
         'remoteID': make_id(record),
-        'author': {
-            'remoteID': record.author
-        },
-        'source': 'noaa_alerts',
+        'source': 'noaa',
         'content': record.summary,
         'summary': record.title,
         'tags': [{'name':tag, 'confidence':1} for tag in tags],
+        'geo': {
+            'coords': [record.geo_long, record.geo_lat]
+        },
         'publishedAt': parse(record.published),
         'license': 'unknown',
         'fromURL': record.link
     }
-
-    coord_str = record.cap_polygon.split(' ')[0].split(',')[::-1]
-    if len(coord_str) > 1:
-        item['geo'] = {
-            'coords': [float(coord) for coord in coord_str]
-        }
 
     return item
 
