@@ -20,6 +20,7 @@ items = [
   {
     'hashtag': '#wali',
     'country': 'United States',
-    'state': 'Hawaii'
+    'state': 'Hawaii',
+    'tags': ['weather']
   }
 ]

@@ -33,7 +33,7 @@ def suck(save_item, handle_error, source):
         source['lastRetrieved'] = {}
 
 
-    def get_and_save(endpoint, request_filters, lr_key, admin1, admin2=None, admin3=None):
+    def get_and_save(endpoint, request_filters, lr_key, admin1, admin2=None, admin3=None, tags=None):
         if lr_key in source['lastRetrieved']:
             request_filters['since_id'] = source['lastRetrieved'][lr_key]
 
@@ -47,7 +47,7 @@ def suck(save_item, handle_error, source):
                     new_since_id = record['id_str']
                     source['lastRetrieved'][lr_key] = new_since_id
 
-                item = transform(record, admin1, admin3=admin3)
+                item = transform(record, admin1, admin3=admin3, tags=tags)
                 save_item(item)
 
 
@@ -71,18 +71,22 @@ def suck(save_item, handle_error, source):
         }
 
         admin3 = None
+        tags = None
 
         if 'state' in h:
             admin3 = h['state']
 
-        get_and_save('search/tweets', request_filters, lr_key, h['country'], admin3=admin3)
+        if 'tags' in h:
+            tags = h['tags']
+
+        get_and_save('search/tweets', request_filters, lr_key, h['country'], admin3=admin3, tags=tags)
         
 
     
     return source['lastRetrieved']
 
 
-def transform(record, admin1, admin2=None, admin3=None):
+def transform(record, admin1, admin2=None, admin3=None, tags=None):
     data = {
         'remoteID': record['id_str'],
         'author': {
@@ -109,6 +113,9 @@ def transform(record, admin1, admin2=None, admin3=None):
         'lifespan': 'temporary',
         'license': 'twitter'
     }
+
+    if tags:
+        data['tags'] = [{'name': tag, 'confidence': 1} for tag in tags]
 
     if admin3:
         data['geo']['addressComponents']['adminArea3'] = admin3
