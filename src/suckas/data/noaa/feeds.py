@@ -14,3 +14,4 @@ items = [
 #http://www.weather.gov/rss_page.php?site_name=nws
 #http://ptwc.weather.gov/feeds/ptwc_rss_hawaii.xml
 #http://inciweb.nwcg.gov/feeds/rss/incidents/
+#http://ptwc.weather.gov/feeds/ptwc_rss_pacific.xml
