@@ -28,8 +28,11 @@ def suck(save_item, handle_error, source):
         d = feedparser.parse(feed['url'])
     
         for entry in d.entries:
-            item = transform(entry, feed['tags'])
-            save_item(item)
+            if 'lastRetrieved' not in source or parse(record.published) > source['lastRetrieved']:
+                item = transform(entry, feed['tags'])
+                save_item(item)
+
+    return datetime.now()
 
 
 def transform(record, tags):
