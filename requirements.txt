@@ -13,3 +13,4 @@ beautifulsoup4==4.3.2
 TwitterAPI==2.1.13
 python-instagram==1.0.0
 xlrd==0.9.3
+feedparser==5.1.3
