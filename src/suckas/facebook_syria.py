@@ -99,8 +99,8 @@ def transform(record, page, admin1, author):
     else:
         return None
 
-    if 'location' in page:
-        print page['location']
+    #if 'location' in page:
+    #    print page['location']
 
     if 'object_id' in record:
         object_id = record['object_id']
