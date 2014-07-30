@@ -7,8 +7,8 @@ items = [
     'state': 'Hawaii',
     'tags': ['weather']
   },
-  #{
-  #  'hashtag': '#idf',
-  #  'country': 'Palestine'
-  #}
+  {
+    'hashtag': '#idf',
+    'country': 'Palestine'
+  }
 ]
