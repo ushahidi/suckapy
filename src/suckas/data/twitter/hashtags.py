@@ -22,5 +22,9 @@ items = [
     'country': 'United States',
     'state': 'Hawaii',
     'tags': ['weather']
+  },
+  {
+    'hashtag': '#idf',
+    'country': 'Palestine'
   }
 ]
