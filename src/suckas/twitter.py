@@ -5,6 +5,9 @@ from dateutil.parser import parse
 from .data.twitter import lists, hashtags
 import csv
 import os
+import logging
+
+logger = logging.getLogger('suckapy')
 
 description = """ First-person accounts from regions affected by conflict and diaster. """
 
@@ -14,7 +17,7 @@ definition = {
     'uniqueName': 'twitter',
     'language': 'python',
     'frequency': 'repeats',
-    'repeatsEvery': 'minute',
+    'repeatsEvery': 'hour',
     'startDate': datetime.strptime('20140507', "%Y%m%d"),
     'endDate': datetime.now() + timedelta(days=365),
     'description': description
@@ -37,6 +40,7 @@ def suck(save_item, handle_error, source):
         if lr_key in source['lastRetrieved']:
             request_filters['since_id'] = source['lastRetrieved'][lr_key]
 
+        request_filters['count'] = 100
         r = api.request(endpoint, request_filters)
         
         new_since_id = None
@@ -49,6 +53,8 @@ def suck(save_item, handle_error, source):
 
                 item = transform(record, admin1, admin3=admin3, tags=tags)
                 save_item(item)
+        else:
+            logger.error("Twitter API error: " + str(r.status_code))
 
 
     for l in lists.items:
@@ -65,7 +71,6 @@ def suck(save_item, handle_error, source):
             tags = l['tags']
 
         get_and_save('lists/statuses', request_filters, lr_key, l['slug'].capitalize(), tags=tags)
-
 
     for h in hashtags.items:
         lr_key = remove_non_ascii(h['hashtag'])
