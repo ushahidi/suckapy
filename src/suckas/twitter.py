@@ -41,6 +41,7 @@ def suck(save_item, handle_error, source):
             request_filters['since_id'] = source['lastRetrieved'][lr_key]
 
         request_filters['count'] = 100
+        #request_filters['max_id'] = '494053583428390914'
         r = api.request(endpoint, request_filters)
         
         new_since_id = None
@@ -72,6 +73,7 @@ def suck(save_item, handle_error, source):
 
         get_and_save('lists/statuses', request_filters, lr_key, l['slug'].capitalize(), tags=tags)
 
+    
     for h in hashtags.items:
         lr_key = remove_non_ascii(h['hashtag'])
 

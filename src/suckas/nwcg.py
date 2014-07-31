@@ -35,8 +35,9 @@ def suck(save_item, handle_error, source):
     
         for entry in d.entries:
             if 'lastRetrieved' not in source or parse(record.published) > source['lastRetrieved']:
-                item = transform(entry, feed['tags'])
-                save_item(item)
+                if hasattr(entry, 'summary'):
+                    item = transform(entry, feed['tags'])
+                    save_item(item)
 
     return datetime.now()
 
