@@ -106,7 +106,7 @@ def suck(save_item, handle_error, source):
                                 record['tags'] = record['tags'] + ['death']
 
                             item = transform(record)
-                            print item
+                            #print item
                             save_item(item)     
 
     r = requests.get('http://www.who.int/csr/don/archive/disease/ebola/en/')
