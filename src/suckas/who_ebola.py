@@ -106,6 +106,7 @@ def suck(save_item, handle_error, source):
                                 record['tags'] = record['tags'] + ['death']
 
                             item = transform(record)
+                            print item
                             save_item(item)     
 
     r = requests.get('http://www.who.int/csr/don/archive/disease/ebola/en/')
@@ -126,7 +127,7 @@ def transform(record):
     content = summary
 
     def make_id():
-        return 'who_' + record['publishedAt'].strftime('%s') + '_' + adj + '_' + noun
+        return 'who_' + record['publishedAt'].strftime('%s') + '_' + adj + '_' + noun + '_' + record['country'].replace(' ','')
 
     data = {
         'remoteID': make_id(),
