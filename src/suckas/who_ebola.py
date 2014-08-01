@@ -40,6 +40,10 @@ def suck(save_item, handle_error, source):
                     table = soup_sub.find('table', {'class': 'borderOn'})
                     if table:
                         pub_date = parse(link.contents[0])
+
+                        if pub_date > parse('July 30 2014'):
+                            continue
+
                         tags = ['ebola','disease','disaster']
                         
                         #countries = ['Guinea', 'Liberia', 'Sierra Leone']
