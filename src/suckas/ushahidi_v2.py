@@ -50,8 +50,11 @@ def suck(save_item, handle_error, source):
         if key in source['lastRetrieved']:
             api_url += '&since_id=' + source['lastRetrieved'][key]
 
-        rr = requests.get(api_url)
-        if rr.status_code != 200:
+        try:
+            rr = requests.get(api_url)
+            if rr.status_code != 200:
+                continue
+        except:
             continue
         
         try:
