@@ -36,6 +36,13 @@ def suck(save_item, handle_error, source):
         return source['lastRetrieved']
     
     json_data = r.json()
+    #json_data = {}
+    # Add instances by hand, the tracker is only kind of reliable
+    json_data['0001'] = {
+        'url': 'http://lern.ushahidi.com/',
+        'name': 'LERN'
+    }
+    
     for key,val in json_data.iteritems():
         api_url = val['url'] + 'api'
         api_url += '?task=incidents&limit=100'
@@ -47,18 +54,21 @@ def suck(save_item, handle_error, source):
         if rr.status_code != 200:
             continue
         
-        report_data = rr.json()
-        if 'payload' not in report_data or 'incidents' not in report_data['payload']:
-            logger.warn("No payload incidents for Ushahidi " + str(key) + "|" + val['name'] + "|" + api_url)
+        try:
+            report_data = rr.json()
+            if 'payload' not in report_data or 'incidents' not in report_data['payload']:
+                logger.warn("No payload incidents for Ushahidi " + str(key) + "|" + val['name'] + "|" + api_url)
+                continue
+
+            for report in report_data['payload']['incidents']:
+                logger.info("Processing records for " + str(key) + "|" + val['name'] + "|" + api_url)
+                item = transform(report, key, val['name'])
+                save_item(item)
+
+                ids = [i['incident']['incidentid'] for i in report_data['payload']['incidents']]
+                source['lastRetrieved'][key] = max(ids)
+        except:
             continue
-
-        for report in report_data['payload']['incidents']:
-            logger.info("Processing records for " + str(key) + "|" + val['name'] + "|" + api_url)
-            item = transform(report, key, val['name'])
-            save_item(item)
-
-            ids = [i['incident']['incidentid'] for i in report_data['payload']['incidents']]
-            source['lastRetrieved'][key] = max(ids)
         
     return source['lastRetrieved']
 
