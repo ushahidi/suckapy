@@ -25,13 +25,14 @@ definition = {
 def remove_non_ascii(s): return "".join(i for i in s if ord(i)<128)
 
 def suck(save_item, handle_error, source):
-    url = 'http://tracker.ushahidi.com/list?return_vars=url,name&limit=0,5000'
+    url = 'http://tracker.ushahidi.com/list?return_vars=url,name&limit=0,20'
 
     if 'lastRetrieved' not in source:
         source['lastRetrieved'] = {}
 
     r = requests.get(url)
     if r.status_code != 200:
+        logger.error('Failed to retrieve list of URLs from Ushahidi tracker')
         return source['lastRetrieved']
     
     json_data = r.json()
@@ -48,9 +49,11 @@ def suck(save_item, handle_error, source):
         
         report_data = rr.json()
         if 'payload' not in report_data or 'incidents' not in report_data['payload']:
+            logger.warn("No payload incidents for Ushahidi " + str(key) + "|" + val['name'] + "|" + api_url)
             continue
 
         for report in report_data['payload']['incidents']:
+            logger.info("Processing records for " + str(key) + "|" + val['name'] + "|" + api_url)
             item = transform(report, key, val['name'])
             save_item(item)
 
