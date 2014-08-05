@@ -25,7 +25,7 @@ definition = {
 def remove_non_ascii(s): return "".join(i for i in s if ord(i)<128)
 
 def suck(save_item, handle_error, source):
-    url = 'http://tracker.ushahidi.com/list?return_vars=url,name&limit=0,20'
+    url = 'http://tracker.ushahidi.com/list?return_vars=url,name&limit=0,5000'
 
     if 'lastRetrieved' not in source:
         source['lastRetrieved'] = {}
