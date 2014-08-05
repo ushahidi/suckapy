@@ -13,7 +13,7 @@ definition = {
     'uniqueName': 'instagrammer',
     'language': 'python',
     'frequency': 'repeats',
-    'repeatsEvery': 'minute',
+    'repeatsEvery': 'hour',
     'status': 'active',
     'startDate': datetime.strptime('20140507', "%Y%m%d"),
     'endDate': datetime.now() + timedelta(days=365),
