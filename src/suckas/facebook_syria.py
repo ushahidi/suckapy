@@ -72,7 +72,11 @@ def get_content(username, graph, source, save_item, admin1=None, author=None):
     }
 
     if 'lastRetrieved' in source and username in source['lastRetrieved']:
+        if source['lastRetrieved'][username] == 'Failing':
+            return False
+            
         kwargs['since'] = source['lastRetrieved'][username]
+
 
     try:
         posts = graph.get(**kwargs)
