@@ -27,5 +27,40 @@ items = [
     'country': 'United States',
     'state': 'Hawaii',
     'tags': ['weather']
+  },
+  {
+    'hashtag': '#OccupyHongKing',
+    'country': "Hong Kong",
+    'tags': ['protest']
+  },
+  {
+    'hashtag': '#OccupyAdmiralty',
+    'country': "Hong Kong",
+    'tags': ['protest']
+  },
+  {
+    'hashtag': '#OccupyHongKing',
+    'country': "Hong Kong",
+    'tags': ['protest']
+  },
+  {
+    'hashtag': '#OccupyMongkong',
+    'country': "Hong Kong",
+    'tags': ['protest']
+  },
+  {
+    'hashtag': '#UmbrellaRevolution',
+    'country': "Hong Kong",
+    'tags': ['protest']
+  },
+  {
+    'hashtag': '#UmbrellaMovement',
+    'country': "Hong Kong",
+    'tags': ['protest']
+  },
+  {
+    'hashtag': '#HKstudentstrike',
+    'country': "Hong Kong",
+    'tags': ['protest']
   }
 ]
