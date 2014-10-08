@@ -57,5 +57,10 @@ items = [
     'hashtag': '#HKstudentstrike',
     'country': "Hong Kong",
     'tags': ['protest']
+  },
+  {
+    'hashtag': '#ebola',
+    'country': '',
+    'tags': ['disease','ebola']
   }
 ]
