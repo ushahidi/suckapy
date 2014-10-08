@@ -29,17 +29,12 @@ items = [
     'tags': ['weather']
   },
   {
-    'hashtag': '#OccupyHongKing',
+    'hashtag': '#OccupyHongKong',
     'country': "Hong Kong",
     'tags': ['protest']
   },
   {
     'hashtag': '#OccupyAdmiralty',
-    'country': "Hong Kong",
-    'tags': ['protest']
-  },
-  {
-    'hashtag': '#OccupyHongKing',
     'country': "Hong Kong",
     'tags': ['protest']
   },
