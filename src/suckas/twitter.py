@@ -18,7 +18,7 @@ definition = {
     'language': 'python',
     'frequency': 'repeats',
     'repeatsEvery': 'hour',
-    'startDate': datetime.strptime('20140507', "%Y%m%d"),
+    'startDate': datetime.strptime('20150101', "%Y%m%d"),
     'endDate': datetime.now() + timedelta(days=365),
     'description': description
 }
