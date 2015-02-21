@@ -79,6 +79,8 @@ def suck(save_item, handle_error, source):
 def transform(record, instance_id, name):
     incident = record['incident']
 
+    print record
+
     data = {
         'remoteID': str(instance_id) + "-" + str(incident['incidentid']),
         'author': {
@@ -103,6 +105,12 @@ def transform(record, instance_id, name):
         data['geo']['coords'] = [
             float(record['locationlongitude']), 
             float(record['locationlatitude'])
+        ]
+
+    elif 'locationlongitude' in incident and 'locationlatitude' in incident:
+        data['geo']['coords'] = [
+            float(incident['locationlongitude']), 
+            float(incident['locationlatitude'])
         ]
     
     return data
