@@ -32,7 +32,6 @@ transform_queue.serializer = json
 pkgpath = os.path.dirname(suckas.__file__)
 sucka_names = [name for _, name, _ in pkgutil.iter_modules([pkgpath])]
 
-
 def setup_sources(sucka_names):
     modules = [importlib.import_module('suckas.'+name) for name in sucka_names]
 
