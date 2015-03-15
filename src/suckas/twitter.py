@@ -71,7 +71,7 @@ def suck(save_item, handle_error, source):
         if 'tags' in l:
             tags = l['tags']
 
-        admin1 = l['slug'].split('-').capitalize()
+        admin1 = l['slug'].split('-')[0].capitalize()
         get_and_save('lists/statuses', request_filters, lr_key, admin1, tags=tags)
 
     
