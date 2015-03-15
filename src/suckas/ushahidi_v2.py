@@ -78,9 +78,6 @@ def suck(save_item, handle_error, source):
 
 def transform(record, instance_id, name):
     incident = record['incident']
-
-    print record
-
     data = {
         'remoteID': str(instance_id) + "-" + str(incident['incidentid']),
         'author': {

@@ -21,8 +21,8 @@ items = [
     'tags': ['weather']
   },
   {
-    'slug': 'nigeria',
-    'owner_screen_name': 'jonathonmorgan',
+    'slug': 'nigeria-election',
+    'owner_screen_name': 'mil',
     'tags': ['election']
   }
   #{
